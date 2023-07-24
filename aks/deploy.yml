@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ltodeploy
+spec:
+  selector:
+    matchLabels:
+      app: ltopod
+  template:
+    metadata:
+      labels:
+        app: ltopod
+    spec:
+      containers:
+      - name: azure-vote-front
+        image: abhishek00007/azureapptf:53
+        # volumeMounts:
+        #    - name: mount-storage
+        #      mountPath: /app/src
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 3000
+      # volumes:
+      # - name: my-volume
+      #   csi:
+      #    driver: file.csi.azure.com
+      #    readOnly: false
+      #    volumeAttributes:
+      #     secretName: azsecret  
+      #     shareName: mount  
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lto-service
+spec:
+  selector:
+    app: ltopod
+  ports:
+  - port: 3000
+  type: LoadBalancer
