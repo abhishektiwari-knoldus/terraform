@@ -1,0 +1,103 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ltodeploy
+spec:
+  selector:
+    matchLabels:
+      app: ltopod
+  template:
+    metadata:
+      labels:
+        app: ltopod
+    spec:
+      containers:
+      - name: azure-vote-front
+        image: abhishek00007/azureapptf:53
+        # volumeMounts:
+        #    - name: mount-storage
+        #      mountPath: /app 
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 3000
+      # volumes:
+      # - name: my-volume
+      #   csi:
+      #    driver: file.csi.azure.com
+      #    readOnly: false
+      #    volumeAttributes:
+      #     secretName: azsecret  
+      #     shareName: mount  
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lto-service
+spec:
+  selector:
+    app: ltopod
+  ports:
+  - port: 3000
+  type: LoadBalancer
+
+
+
+
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata: 
+#   name: demo-deploy
+#   labels:
+#     app: ltopod
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: ltopod
+#   template:
+#     metadata:
+#       name: deploy-pods
+#       labels:
+#         app: ltopod
+#     spec:
+#       containers:
+#         - name: nginx-container
+#           image: nginx
+#           ports:
+#           - containerPort: 80
+#           resources:
+#             requests:
+#               cpu: 200m
+#               memory: 128Mi
+#             limits:
+#               cpu: 500m
+#               memory: 256Mi
+#           volumeMounts:
+#            - name: my-volume
+#              mountPath: /var/log/nginx
+#       volumes:
+#       - name: my-volume
+#         csi:
+#          driver: file.csi.azure.com
+#          readOnly: false
+#          volumeAttributes:
+#           secretName: azsecret  
+#           shareName: mount
+
+
+
+
+
+

@@ -1,0 +1,2 @@
+replication = "LRS"
+tier = "Standard"
